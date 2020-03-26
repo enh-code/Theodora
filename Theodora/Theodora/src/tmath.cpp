@@ -1,3 +1,14 @@
+//*****************************************
+//  File: tmath.cpp
+//  Project: Theodora
+//  Author: Evan Hess
+//  Date: 3/26/20
+//
+//  Purpose: Sets up math and physics
+//  objects for game engine use.
+//  
+//  R0: 26-Mar-2020 - Original version
+//*****************************************
 #include "tmath.h"
 
 using namespace tmath;
@@ -26,7 +37,7 @@ int tmath::map(float value, float srcmin, float srcmax, float dstmin, float dstm
 
 float tmath::mapf(float value, float srcmin, float srcmax, float dstmin, float dstmax)
 {
-	return lerp(normalizef(value, srcmin, srcmax), dstmin, dstmax);
+	return lerpf(normalizef(value, srcmin, srcmax), dstmin, dstmax);
 }
 
 float tmath::normalizef(float value, float min, float max)
@@ -34,7 +45,7 @@ float tmath::normalizef(float value, float min, float max)
 	return (value - min) / (max - min);
 }
 
-//***VECTOR CLASS***
+//***VECTOR CLASS***//
 
 Vector::Vector(int x, int y)
 {
@@ -53,7 +64,7 @@ Vector::~Vector()
 	
 }
 
-//X properties-----------------------------------
+//X properties-----------------------------------//
 
 void Vector::setX(int x)
 {
@@ -75,7 +86,7 @@ float Vector::getXf()
 	return x;
 }
 
-//Y properties-----------------------------------
+//Y properties-----------------------------------//
 
 void Vector::setY(int y)
 {
@@ -97,18 +108,18 @@ float Vector::getYf()
 	return y;
 }
 
-//Length properties------------------------------
+//Length properties------------------------------//
 
 void Vector::setLength(int l)
 {
-	float angle = getAnglef();
+	float angle = getAngle();
 	x = cosf(angle) * l;
 	y = sinf(angle) * l;
 }
 
 void Vector::setLength(float l)
 {
-	float angle = getAnglef();
+	float angle = getAngle();
 	x = cosf(angle) * l;
 	y = sinf(angle) * l;
 }
@@ -123,7 +134,7 @@ float Vector::getLengthf()
 	return sqrtf(x * x + y * y);
 }
 
-//Angle properties-------------------------------
+//Angle properties-------------------------------//
 
 void Vector::setAngle(int radians)
 {
@@ -139,17 +150,12 @@ void Vector::setAngle(float radians)
 	y = sinf(radians) * length;
 }
 
-int Vector::getAngle()
-{
-	return int(atan2f(y, x));
-}
-
-float Vector::getAnglef()
+float Vector::getAngle()
 {
 	return atan2f(y, x);
 }
 
-//Overloaded operators---------------------------
+//Overloaded operators---------------------------//
 
 Vector Vector::operator+(Vector* v2)
 {
@@ -245,4 +251,4 @@ void Vector::operator/=(float value)
 	this->y /= value;
 }
 
-//***END VECTOR CLASS***
+//***END VECTOR CLASS***//

@@ -50,8 +50,7 @@ namespace tmath
 
 			void setAngle(int radians);
 			void setAngle(float radians);
-			int getAngle();
-			float getAnglef();
+			float getAngle();
 
 
 
