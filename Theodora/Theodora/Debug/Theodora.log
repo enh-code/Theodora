@@ -1,0 +1,3 @@
+﻿  main.cpp
+D:\GitHub\Theodora\Theodora\Theodora\src\main.cpp(5,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Theodora.vcxproj -> D:\GitHub\Theodora\Theodora\Debug\Theodora.exe
