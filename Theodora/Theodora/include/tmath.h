@@ -13,7 +13,7 @@
 #ifndef TMATH_H
 #define TMATH_H
 
-#include <math.h>
+constexpr float PI = 3.141593; //Pi rounded
 
 namespace tmath
 {

@@ -10,9 +10,9 @@
 //  R0: 26-Mar-2020 - Original version
 //*****************************************
 #include "tmath.h"
+#include <math.h>
 
 using namespace tmath;
-
 
 float tmath::clamp(float value, float min, float max)
 {

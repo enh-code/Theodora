@@ -150,11 +150,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\theodora.h" />
     <ClInclude Include="include\tmath.h" />
+    <ClInclude Include="include\tobject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\theodora.cpp" />
     <ClCompile Include="src\tmath.cpp" />
+    <ClCompile Include="src\tobject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
