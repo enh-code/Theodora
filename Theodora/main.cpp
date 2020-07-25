@@ -8,7 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
-#include <ctime>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -54,8 +53,6 @@ int CENTER_Y = SCREEN_HEIGHT / 2;
 
 unsigned int VAO, VBO, TBO;
 
-//All of the unique vertices
-//I think the problem is with the texture coordinates
 float vertices[] =
 {
     //Position          //Texture
@@ -105,6 +102,8 @@ float vertices[] =
 void display(void);
 void reshape(int width, int height);
 
+int program;
+
 int main(int argc, char** argv)
 {
     GLenum error;
@@ -148,13 +147,13 @@ int main(int argc, char** argv)
     glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     //Load image
     int s, t, channels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load("container.jpg", &s, &t, &channels, 0);
+    unsigned char *data = stbi_load("picture.jpg", &s, &t, &channels, 0);
     if(data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, s, t, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -188,7 +187,7 @@ int main(int argc, char** argv)
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    int program = glCreateProgram();
+    program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
@@ -206,7 +205,7 @@ int main(int argc, char** argv)
 
     //Math from local coordinates to perspective view
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0, 1.0, 0.0));
+    model = glm::rotate(model, glutGet(GLUT_ELAPSED_TIME) * glm::radians(50.0f), glm::vec3(0.0, 1.0, 0.0));
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -225,6 +224,7 @@ int main(int argc, char** argv)
     //Set callbacks
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
+    glutIdleFunc(display);
 
     glutMainLoop();
 
@@ -239,6 +239,24 @@ void display(void)
 {
     glClearColor(0.2f, 0.3f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //Math from local coordinates to perspective view
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glutGet(GLUT_ELAPSED_TIME) / 1000.0f * glm::radians(50.0f), glm::vec3(0.5, 1.0, 0.0));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    glm::mat4 proj;
+    proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
+    //Set uniform matrix variables
+    int loc = glGetUniformLocation(program, "model");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(model));
+    loc = glGetUniformLocation(program, "view");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
+    loc = glGetUniformLocation(program, "projection");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(proj));
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
