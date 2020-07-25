@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     //Init libraries
     glutInit(&argc, argv);
     glutInitContextVersion(3, 3);
-    glutInitContextProfile(GL_CONTEXT_CORE_PROFILE_BIT);
+    glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     glutCreateWindow("OpenGL");
